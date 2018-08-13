@@ -6,6 +6,10 @@ public class MainClass {
 		
 	}
 	
+	public void deleteLater() {
+		
+	}
+	
 	public static void main(String[] args) {
 		
 	}
