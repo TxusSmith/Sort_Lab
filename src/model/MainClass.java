@@ -6,12 +6,25 @@ import java.util.concurrent.ThreadLocalRandom;
 
 public class MainClass {
 	
-	private static String arraySize;	
+	public static final int maxLength =  800000000;
+	public static final byte MaxByte=  Byte.MAX_VALUE - 5;
+	public static final short MaxShort =  Short.MAX_VALUE - 10;
+	public static final int MaxInteger =  Integer.MAX_VALUE - 10;
+	public static final long MaxLong =  Long.MAX_VALUE - 10;
+	public static final float MaxFloat =  Float.MAX_VALUE - 10;
+	public static final double MaxDouble =  Double.MAX_VALUE - 10;
+	
+	private static int arraySize;	
 	private static byte dataTipe;	
 	private static byte howItWillBe;	
 	private static byte aleatoryPorcentage;	
 	
 	public MainClass() {
+		
+		arraySize = 0;
+		dataTipe = 0;
+		howItWillBe = 0;
+		aleatoryPorcentage = 0;
 		
 	}
 	
@@ -77,7 +90,7 @@ public class MainClass {
     // Main function that sorts arr[l..r] using
     // merge()
     
-    public static void ascendentMergeSort(int arr[], int l, int r)
+    public static void mergeSort(int arr[], int l, int r)
     {
         if (l < r)
         {
@@ -85,8 +98,8 @@ public class MainClass {
             int m = (l+r)/2;
  
             // Sort first and second halves
-            ascendentMergeSort(arr, l, m);
-            ascendentMergeSort(arr , m+1, r);
+            mergeSort(arr, l, m);
+            mergeSort(arr , m+1, r);
  
             // Merge the sorted halves
             merge(arr, l, m, r);
@@ -119,7 +132,7 @@ public class MainClass {
         }
     }
     
-    public static void ascendentHeapSort(int arr[])
+    public static void HeapSort(int arr[])
     {
         int n = arr.length;
  
@@ -184,7 +197,7 @@ public class MainClass {
  
     // The main function to that sorts arr[] of size n using
     // Radix Sort
-    public static void ascendentRadixSort(int arr[], int n)
+    public static void radixSort(int arr[], int n)
     {
         // Find the maximum number to know number of digits
         int m = getMax(arr, n);
@@ -196,16 +209,24 @@ public class MainClass {
             countSort(arr, n, exp);
     }
     
-    public static byte[] randomBytes(int size) {
+    public static byte[] randomByte() {
     	
-    	byte[] array = new byte[size];
+    	byte[] array = new byte[arraySize];
+    	ThreadLocalRandom.current().nextBytes(array);
+    	
+    	return array;
+    	
+    }    
+    
+    public static short[] randomShort() {
+    	
+    	short[] array = new short[arraySize];
     	
     	int i = 0;
     	
-    	while (i < size) {
+    	while (i < arraySize) {
     		
-    		byte x = (byte)ThreadLocalRandom.current().nextInt(0, 120);
-    		array[i] = x;
+    		array[i] = (short)ThreadLocalRandom.current().nextInt(Short.MIN_VALUE + 10, Short.MAX_VALUE -10);
     		
     		i++;
     	}
@@ -214,16 +235,15 @@ public class MainClass {
     	
     }
     
-    public static int[] randomInts(int size) {
-    	
-    	int[] array = new int[size];
+    public static int[] randomInt() {
+    	    	
+    	int[] array = new int[arraySize];
     	
     	int i = 0;
     	
-    	while (i < size) {
+    	while (i < arraySize) {
     		
-    		int x = ThreadLocalRandom.current().nextInt(0, 2147400000);
-    		array[i] = x;
+    		array[i] = ThreadLocalRandom.current().nextInt();
     		
     		i++;
     	}
@@ -232,8 +252,56 @@ public class MainClass {
     	
     }
     
+    public static long[] randomLong() {
+    	
+    	long[] array = new long[arraySize];
+    	
+    	int i = 0;
+    	
+    	while (i < arraySize) {
+    		
+    		array[i] = ThreadLocalRandom.current().nextLong();
+    		
+    		i++;
+    	}
+    	
+    	return array;
+    	
+    }
     
+    public static float[] randomFloat() {
+    	
+    	float[] array = new float[arraySize];
+    	
+    	int i = 0;
+    	
+    	while (i < arraySize) {
+    		
+    		array[i] = ThreadLocalRandom.current().nextFloat();
+    		
+    		i++;
+    	}
+    	
+    	return array;
+    	
+    }  
     
+    public static double[] randomDouble() {
+    	
+    	double[] array = new double[arraySize];
+    	
+    	int i = 0;
+    	
+    	while (i < arraySize) {
+    		
+    		array[i] = ThreadLocalRandom.current().nextDouble();
+    		
+    		i++;
+    	}
+    	
+    	return array;
+    	
+    }
 	
 	public static void main(String[] args) throws IOException {
 		
@@ -242,7 +310,22 @@ public class MainClass {
 		BufferedReader in = new BufferedReader(new InputStreamReader(System.in));
 		
 		System.out.println("ingresar numero de elementos a ordenar");
-		arraySize = in.readLine();
+		boolean done = false;
+
+		// verify that the array doesn't be over the possible
+		
+		while(!done) {
+			
+			arraySize = Integer.parseInt(in.readLine());
+			
+			if (arraySize <= maxLength) 
+				done = true;
+			 else 
+				System.out.println("El valor supera los limites del programa, intente nuevamente");
+			
+		}
+		
+		//
 		
 		System.out.println("desea configurar el tipo de datos a ordenar[Y/N]");
 		String answer = in.readLine();
@@ -251,19 +334,17 @@ public class MainClass {
 			System.out.println("que tipo de dato quiere generar \n "
 					+ "[{0}Byte, {1}Short, {2}Int, {3}Long, {4}Float, {5}Double]");
 		
-			answer = in.readLine();
-			dataTipe = Byte.parseByte(answer);
+			dataTipe = Byte.parseByte(in.readLine());
 			
 			System.out.println("como desea que sean generado los valores \n"
 					+ "[{0}Ord. ascendente, {1}ord. descendente, {2}aleatorio, {3}dar porcentaje de aleatoriedad]");
 			
-			answer = in.readLine();
-			howItWillBe = Byte.parseByte(answer);
+			howItWillBe = Byte.parseByte(in.readLine());
 			
 			if(howItWillBe == 3) {
 				System.out.println("ingrese el porcetaje de aleatoriedad");
-				answer = in.readLine();
-				aleatoryPorcentage = Byte.parseByte(answer);
+				
+				aleatoryPorcentage = Byte.parseByte(in.readLine());
 			}	
 			
 		}
@@ -288,10 +369,6 @@ public class MainClass {
 //			}
 //				
 //			}
-		
-		for (byte value : randomBytes(5)) {
-			System.out.println(value);
-		}
 		
 	}
 
