@@ -1,0 +1,5 @@
+El programa no tiene interfaz grafica, es por consola.
+
+Este es el link en Git https://github.com/JuanDVera/Sort_Lab
+hubieron problemas y no pudimos trabajar los dos a la vez.
+
